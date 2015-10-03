@@ -1,0 +1,9 @@
+{
+  "name": "angular-templates",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0"
+  }
+}
