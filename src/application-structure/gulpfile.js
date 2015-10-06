@@ -138,8 +138,8 @@ function copyLibs(libConfig) {
 		var source = argv.dev ? libConfigEntry.source.development : libConfigEntry.source.production;
 		gulp.src(source)
 			.pipe(rename({
-				dirname: 'lib',
-				basename: libConfigEntry.targetName
+				dirname: '',
+				basename: libConfigEntry.targetBaseName
 			}))
 			.pipe(gulp.dest(TARGET));
 	}
