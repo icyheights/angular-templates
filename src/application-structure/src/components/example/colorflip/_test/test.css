@@ -1,3 +1,4 @@
-.test-container .example-colorflip {
+.test-container {
+	display: inline-block;
 	background-color: lightgray;
 }
