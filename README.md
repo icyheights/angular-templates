@@ -6,9 +6,7 @@ Complete explanation of this approach to Angular application design is yet to be
 
 ## Quickstart:
 
-
 * `gulp directive` - make directive component and its testing environment 
 * `gulp service` - make service component 
 * `gulp filter` - make filter component
-
-`gulp-test-task.js` in src contains template task for building directive test page
+* `gulp app` - make example application
