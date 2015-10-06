@@ -1,0 +1,7 @@
+{
+  "name": "ppvd-vr",
+  "private": "true",
+  "dependencies": {
+    "angular": "~1.4.7"
+  }
+}

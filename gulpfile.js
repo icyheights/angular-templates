@@ -8,9 +8,9 @@ var del = require('del');
 
 //Global configuration constants
 
-var TEMPLATES = 'src/templates/';
-var APPLICATION_STRUCTURE = 'src/application-structure/'
-var TARGET = 'target/';
+var TEMPLATES = './src/templates/';
+var APPLICATION_STRUCTURE = './src/application-structure/'
+var TARGET = './target/';
 
 //Tasks
 
@@ -46,6 +46,7 @@ function clean() {
 
 function directive() {
 	copyModule();
+	copyDependencies();
 	copyDirective();
 	copyController();
 	copyTemplate();
@@ -72,6 +73,11 @@ function app() {
 
 function copyDirective() {
 	gulp.src(TEMPLATES + 'directive.js')
+		.pipe(gulp.dest(TARGET));
+}
+
+function copyDependencies() {
+	gulp.src(TEMPLATES + 'dependencies.json')
 		.pipe(gulp.dest(TARGET));
 }
 
@@ -118,6 +124,6 @@ function copyAppStructure() {
 
 function copyLibJSON() {
 	gulp.src(APPLICATION_STRUCTURE + 'lib.json')
-		.pipe(gulp.dest(TARGET + 'test'))
-		.pipe(gulp.dest(TARGET + 'apps/example'));
+		.pipe(gulp.dest(TARGET + 'src/test'))
+		.pipe(gulp.dest(TARGET + 'src/apps/example'));
 }

@@ -14,7 +14,7 @@ var rename = require('gulp-rename');
 
 //Global configuration constants
 
-var TARGET = 'target/';
+var TARGET = './target/';
 
 //Tasks
 
@@ -39,19 +39,20 @@ gulp.task('default', function() {
 //Task functions
 
 function clean() {
-	return del(config.target.base + '**/*');
+	return del(TARGET + '**/*');
 }
 
 function test() {
-	var moduleName = config.argv.n;
+	var moduleName = argv.n;
 	if (!moduleName) {
-		process.stdout.write('Incorrect invocation.\n');
-		process.stdout.write('Usage: gulp test -n module.name\n');
+		process.stdout.write('\nIncorrect invocation.\n');
+		process.stdout.write('Usage: gulp test -n module.name\n\n');
+		return;
 	}
 
 	buildDirective(moduleName);
 	copyResources();
-	copyLibs(require('src/test/lib.json'));
+	copyLibs(require('./src/test/lib.json'));
 	copyTestDirective(moduleName);
 	copyTestIndex();
 }
@@ -67,12 +68,12 @@ function buildDirective(moduleName) {
 }
 
 function getModulePath(moduleName) {
-	return 'src/components/' + moduleName.replace(/\./g, '/') + '/';
+	return './src/components/' + moduleName.replace(/\./g, '/') + '/';
 }
 
 function getAllModuleNames(moduleName) {
 	var directDependencies = require(getModulePath(moduleName) + 'dependencies.json');
-	return Array.prototype.concat.apply([moduleName], directDependencies.map(getAllPaths));
+	return Array.prototype.concat.apply([moduleName], directDependencies.map(getAllModuleNames));
 }
 
 function glob(moduleName, pattern) {
@@ -86,7 +87,7 @@ function buildJS(moduleNames) {
 		.pipe(angularFilesort())
 		.pipe(concat('script.js'));
 	
-	if (!args.dev) {
+	if (!argv.dev) {
 		stream = stream.pipe(uglify());
 	}
 
@@ -126,7 +127,7 @@ function buildTemplates(moduleNames) {
 }
 
 function copyResources() {
-	gulp.src('resources/**/*')
+	gulp.src('./resources/**/*')
 		.pipe(gulp.dest(TARGET));
 }
 
@@ -136,7 +137,7 @@ function copyLibs(libConfig) {
 	function copyLib(libConfigEntry) {
 		var source = argv.dev ? libConfigEntry.source.development : libConfigEntry.source.production;
 		gulp.src(source)
-			.pipe(gulp.rename({
+			.pipe(rename({
 				dirname: 'lib',
 				basename: libConfigEntry.targetName
 			}))
@@ -154,6 +155,6 @@ function copyTestDirective(moduleName) {
 }
 
 function copyTestIndex() {
-	gulp.src('src/test/index.html')
+	gulp.src('./src/test/index.html')
 		.pipe(gulp.dest(TARGET));
 }

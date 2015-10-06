@@ -2,15 +2,15 @@
 	{
 		"targetName": "angular.js",
 		"source": {
-			"development": "bower_components/angular/angular.js",
-			"production": "bower_components/angular/angular.min.js"
+			"development": "./bower_components/angular/angular.js",
+			"production": "./bower_components/angular/angular.min.js"
 		}
 	},
 	{
 		"targetName": "custom.js",
 		"source": {
-			"development": "lib/custom.js",
-			"production": "lib/custom.min.js"
+			"development": "./lib/custom.js",
+			"production": "./lib/custom.min.js"
 		}
 	}
 ]
