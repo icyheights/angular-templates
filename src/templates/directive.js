@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
 
-	angular.module('module.name').
-		directive('moduleName', moduleName);
+	angular.module('module.name')
+		.directive('moduleName', moduleName);
 
 	function moduleName() {
 		return {

@@ -2,7 +2,7 @@
 	'use strict';
 
 	var testModule = angular.module('test', [
-		'module.name'
+		'example'
 	]);
 	
 	testModule.directive('test', test);

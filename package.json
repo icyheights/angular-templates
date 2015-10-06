@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "del": "^2.0.2",
-    "gulp": "^3.9.0"
+    "gulp": "^3.9.0",
+    "gulp-ignore": "^2.0.1"
   }
 }

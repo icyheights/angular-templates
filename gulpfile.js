@@ -3,11 +3,13 @@
 //required node modules
 
 var gulp = require('gulp');
+var ignore = require('gulp-ignore');
 var del = require('del');
 
 //Global configuration constants
 
 var TEMPLATES = 'src/templates/';
+var APPLICATION_STRUCTURE = 'src/application-structure/'
 var TARGET = 'target/';
 
 //Tasks
@@ -17,6 +19,7 @@ var tasks = [
 	{name: 'directive', deps: ['clean'], runner: directive},
 	{name: 'service', deps: ['clean'], runner: service},
 	{name: 'filter', deps: ['clean'], runner: filter},
+	{name: 'app', deps: ['clean'], runner: app}
 ];
 
 tasks.forEach(makeTask);
@@ -38,7 +41,7 @@ function printTask(task) {
 }
 
 function clean() {
-	return del(target + '**/*');
+	return del(TARGET + '**/*');
 }
 
 function directive() {
@@ -58,6 +61,11 @@ function service() {
 function filter() {
 	copyModule();
 	copyFilter();
+}
+
+function app() {
+	copyAppStructure();
+	copyLibJSON();
 }
 
 //Auxiliary functions
@@ -102,3 +110,14 @@ function copyTest() {
 		.pipe(gulp.dest(TARGET + '_test'));
 }
 
+function copyAppStructure() {
+	gulp.src(APPLICATION_STRUCTURE + '**/*')
+		.pipe(ignore.exclude('lib.json'))
+		.pipe(gulp.dest(TARGET));
+}
+
+function copyLibJSON() {
+	gulp.src(APPLICATION_STRUCTURE + 'lib.json')
+		.pipe(gulp.dest(TARGET + 'test'))
+		.pipe(gulp.dest(TARGET + 'apps/example'));
+}

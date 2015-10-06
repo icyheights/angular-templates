@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
 
-	angular.module('module.name').
-		controller('ModuleNameController', ModuleNameController);
+	angular.module('module.name')
+		.controller('ModuleNameController', ModuleNameController);
 
 	function ModuleNameController() {
 		var vm = this;

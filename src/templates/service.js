@@ -1,8 +1,8 @@
 (function() {
 	'use strict';
 
-	angular.module('module.name').
-		factory('moduleName', moduleNameFactory);
+	angular.module('module.name')
+		.factory('moduleName', moduleNameFactory);
 	
 	moduleNameFactory.$inject = [];
 
