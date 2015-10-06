@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="example.root">
 <head>
 	<meta charset="UTF-8">
-	<!-- Root component should set the title through the $rootScope -->
 	<title>{{pageTitle}}</title>
 	<link rel="stylesheet" href="style.css">
 </head>
-<body ng-app="rootComponent">
-	<example></example>
+<body>
+	<example-root></example-root>
 	<script src="angular.js"></script>
-	<!-- Add any required libs -->
 	<script src="script.js"></script>
 </body>
 </html>

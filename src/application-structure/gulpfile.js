@@ -21,7 +21,7 @@ var TARGET = './target/';
 var tasks = [
 	{name: 'clean', deps: [], runner: clean},
 	{name: 'test', deps: ['clean'], runner: test},
-	{name: 'example', deps: ['clean'], runner: test},
+	{name: 'app', deps: ['clean'], runner: app},
 ];
 
 tasks.forEach(function(task) {
@@ -43,7 +43,7 @@ function clean() {
 }
 
 function test() {
-	var moduleName = argv.n;
+	var moduleName = argv.n.replace(/-/g, '.');
 	if (!moduleName) {
 		process.stdout.write('\nIncorrect invocation.\n');
 		process.stdout.write('Usage: gulp test -n module.name\n\n');
@@ -55,6 +55,22 @@ function test() {
 	copyLibs(require('./src/test/lib.json'));
 	copyTestDirective(moduleName);
 	copyTestIndex();
+}
+
+function app() {
+	var appName = argv.n;
+	if (!appName) {
+		process.stdout.write('\nIncorrect invocation.\n');
+		process.stdout.write('Usage: gulp app -n app-name\n\n');
+		return;
+	}
+
+	var moduleName = appName.replace(/-/g, '.');
+
+	buildDirective(moduleName);
+	copyResources();
+	copyLibs(require('./src/apps/' + appName + '/lib.json'));
+	copyAppIndex(appName);
 }
 
 //Auxiliary functions
@@ -156,5 +172,10 @@ function copyTestDirective(moduleName) {
 
 function copyTestIndex() {
 	gulp.src('./src/test/index.html')
+		.pipe(gulp.dest(TARGET));
+}
+
+function copyAppIndex(appName) {
+	gulp.src('./src/apps/' + appName + '/index.html')
 		.pipe(gulp.dest(TARGET));
 }

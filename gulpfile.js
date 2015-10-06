@@ -125,5 +125,5 @@ function copyAppStructure() {
 function copyLibJSON() {
 	gulp.src(APPLICATION_STRUCTURE + 'lib.json')
 		.pipe(gulp.dest(TARGET + 'src/test'))
-		.pipe(gulp.dest(TARGET + 'src/apps/example'));
+		.pipe(gulp.dest(TARGET + 'src/apps/example-root'));
 }

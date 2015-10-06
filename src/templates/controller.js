@@ -10,6 +10,9 @@
 		activate();
 
 		function activate() {
+			if (typeof vm.input === "undefined") {
+				throw new Error("Input not provided");
+			}
 		}
 	}
 })();

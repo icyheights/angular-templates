@@ -1,6 +1,6 @@
 (function() {
 	'use strict';
 
-	angular.module('example', [
+	angular.module('example.colorflip', [
 	]);
 })();

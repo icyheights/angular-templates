@@ -2,7 +2,7 @@
 	'use strict';
 
 	var testModule = angular.module('test', [
-		'example'
+		'example.colorflip'
 	]);
 	
 	testModule.directive('test', test);
