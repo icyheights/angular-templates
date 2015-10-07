@@ -2,7 +2,7 @@
  * @desc
  * Example of directive component
  *
- * @arg {string} input.text - Text to show in the component
+ * @arg {string} text - Text to show in the component
  */
 (function() {
 	'use strict';
