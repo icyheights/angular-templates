@@ -6,7 +6,6 @@
 	]);
 	
 	testModule.directive('test', test);
-	testModule.controller('TestController', TestController);
 
 	function test() {
 		return {
