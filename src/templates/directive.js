@@ -1,3 +1,9 @@
+/**
+ * @desc 
+ * Directive description
+ *
+ * @arg {paramtype} paramname - input parameter description
+ */
 (function() {
 	'use strict';
 

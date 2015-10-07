@@ -1,3 +1,7 @@
+/**
+ * @desc
+ * Root component of example app
+ */
 (function() {
 	'use strict';
 
