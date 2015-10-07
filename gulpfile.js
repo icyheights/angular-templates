@@ -67,6 +67,7 @@ function filter() {
 function app() {
 	copyAppStructure();
 	copyLibJSON();
+	copyGitignore();
 }
 
 //Auxiliary functions
@@ -126,4 +127,9 @@ function copyLibJSON() {
 	gulp.src(APPLICATION_STRUCTURE + 'lib.json')
 		.pipe(gulp.dest(TARGET + 'src/test'))
 		.pipe(gulp.dest(TARGET + 'src/apps/example-root'));
+}
+
+function copyGitignore() {
+	gulp.src(APPLICATION_STRUCTURE + '.gitignore')
+		.pipe(gulp.dest(TARGET));
 }
