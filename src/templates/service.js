@@ -7,16 +7,19 @@
 	moduleNameFactory.$inject = [];
 
 	function moduleNameFactory() {
-		var init = initClasses();
+		var init = init();
 		return {
-			makeSomeClass: init.makeSomeClass
+			SOME_CONSTANT: init.SOME_CONSTANT,
+			makeSomeClass: init.makeSomeClass,
 			doSomething: doSomething
 		};
 
 		function doSomething() {
 		}
 
-		function initClasses() {
+		function init() {
+			var SOME_CONSTANT = '';
+
 			function SomeClass() {
 			}
 
@@ -28,6 +31,7 @@
 			}
 
 			return {
+				SOME_CONSTANT: SOME_CONSTANT,
 				makeSomeClass: makeSomeClass
 			}
 		}
