@@ -57,11 +57,13 @@ function directive() {
 function service() {
 	copyModule();
 	copyService();
+	copyDependencies();
 }
 
 function filter() {
 	copyModule();
 	copyFilter();
+	copyDependencies();
 }
 
 function app() {
