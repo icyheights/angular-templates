@@ -7,7 +7,7 @@
 	moduleNameFactory.$inject = [];
 
 	function moduleNameFactory() {
-		var init = init();
+		var init = runFactory();
 		return {
 			SOME_CONSTANT: init.SOME_CONSTANT,
 			makeSomeClass: init.makeSomeClass,
@@ -17,7 +17,7 @@
 		function doSomething() {
 		}
 
-		function init() {
+		function runFactory() {
 			var SOME_CONSTANT = '';
 
 			function SomeClass() {
