@@ -50,7 +50,10 @@ function test() {
 		return;
 	}
 
-	buildDirective(moduleName);
+	var testDependencies = require(getModulePath(moduleName) + '_test/dependencies.json');
+	var allModules = Array.prototype.concat.apply([], testDependencies.map(getModuleAndDependencies));
+
+	buildModules(allModules);
 	copyResources();
 	copyLibs(require('./src/test/lib.json'));
 	copyTestDirective(moduleName);
@@ -67,7 +70,8 @@ function app() {
 
 	var moduleName = appName.replace(/-/g, '.');
 
-	buildDirective(moduleName);
+	var allModules = getModuleAndDependencies(moduleName);
+	buildModules(allModules);
 	copyResources();
 	copyLibs(require('./src/apps/' + appName + '/lib.json'));
 	copyAppIndex(appName);
@@ -75,9 +79,7 @@ function app() {
 
 //Auxiliary functions
 
-function buildDirective(moduleName) {
-	var moduleNames = getAllModuleNames(moduleName);
-	
+function buildModules(moduleNames) {
 	buildJS(moduleNames);
 	buildCSS(moduleNames);
 	buildTemplates(moduleNames);
@@ -87,9 +89,9 @@ function getModulePath(moduleName) {
 	return './src/components/' + moduleName.replace(/\./g, '/') + '/';
 }
 
-function getAllModuleNames(moduleName) {
+function getModuleAndDependencies(moduleName) {
 	var directDependencies = require(getModulePath(moduleName) + 'dependencies.json');
-	return Array.prototype.concat.apply([moduleName], directDependencies.map(getAllModuleNames));
+	return Array.prototype.concat.apply([moduleName], directDependencies.map(getModuleAndDependencies));
 }
 
 function glob(moduleName, pattern) {

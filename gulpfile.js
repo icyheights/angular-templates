@@ -115,7 +115,7 @@ function copyTemplate() {
 }
 
 function copyTest() {
-	gulp.src(TEMPLATES + 'test*')
+	gulp.src([TEMPLATES + 'test*', TEMPLATES + 'dependencies.json'])
 		.pipe(gulp.dest(TARGET + '_test'));
 }
 
