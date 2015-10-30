@@ -21,7 +21,7 @@
 
 	function TestController() {
 		var vm = this;
-		vm.testData = {};
-		vm.testData.text = 'test data';
+		vm.testInput = {};
+		vm.testInput.text = 'test';
 	}
 })();
