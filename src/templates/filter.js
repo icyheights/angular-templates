@@ -1,10 +1,19 @@
+/**
+ * @desc
+ * Filter description
+ *
+ * @arg {type} input - parameter description
+ * @return {type} - return value description
+ */
 (function() {
 	'use strict';
 
-	angular.module('module.name')
-		.filter('moduleName', moduleName);
+	angular.module('__namePattern__', [
+	]).filter('__namePattern__', __namePattern__);
+
+	__namePattern__.$inject = [];
 	
-	function moduleName() {
+	function __namePattern__() {
 		return function(input) {
 		}
 	}

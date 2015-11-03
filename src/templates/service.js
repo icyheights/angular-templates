@@ -1,39 +1,24 @@
+/**
+ * @desc
+ * Service description
+ *
+ */
 (function() {
 	'use strict';
 
-	angular.module('module.name')
-		.factory('moduleName', moduleNameFactory);
+	angular.module('__namePattern__')
+		.factory('__namePattern__', __namePattern__);
 	
-	moduleNameFactory.$inject = [];
+	__namePattern__.$inject = [];
 
-	function moduleNameFactory() {
-		var init = runFactory();
-		return {
-			SOME_CONSTANT: init.SOME_CONSTANT,
-			makeSomeClass: init.makeSomeClass,
-			doSomething: doSomething
+	function __namePattern__() {
+		var service = {
+			api: api
 		};
 
-		function doSomething() {
+		function api() {
 		}
 
-		function runFactory() {
-			var SOME_CONSTANT = '';
-
-			function SomeClass() {
-			}
-
-			SomeClass.prototype.method = function() {
-			};
-
-			function makeSomeClass() {
-				return new SomeClass();
-			}
-
-			return {
-				SOME_CONSTANT: SOME_CONSTANT,
-				makeSomeClass: makeSomeClass
-			}
-		}
+		return service;
 	}
 })();

@@ -3,8 +3,10 @@
 //required node modules
 
 var gulp = require('gulp');
+var replace = require('gulp-replace');
 var ignore = require('gulp-ignore');
 var del = require('del');
+var argv = require('yargs').argv;
 
 //Global configuration constants
 
@@ -25,9 +27,8 @@ var tasks = [
 tasks.forEach(makeTask);
 
 gulp.task('default', function() {
-	process.stdout.write('\nAvailable tasks:\n');
+	console.log('Available tasks:');
 	tasks.forEach(printTask);
-	process.stdout.write('\n');
 });
 
 //Task functions
@@ -37,7 +38,7 @@ function makeTask(task) {
 }
 
 function printTask(task) {
-	process.stdout.write('\t' + task.name + '\n');
+	console.log('\t' + task.name);
 }
 
 function clean() {
@@ -45,25 +46,15 @@ function clean() {
 }
 
 function directive() {
-	copyModule();
-	copyDependencies();
-	copyDirective();
-	copyController();
-	copyTemplate();
-	copyCSS();
-	copyTest();
+	checkNameAnd(buildDirective);
 }
 
 function service() {
-	copyModule();
-	copyService();
-	copyDependencies();
+	checkNameAnd(buildService);
 }
 
 function filter() {
-	copyModule();
-	copyFilter();
-	copyDependencies();
+	checkNameAnd(buildFilter);
 }
 
 function app() {
@@ -74,49 +65,48 @@ function app() {
 
 //Auxiliary functions
 
-function copyDirective() {
-	gulp.src(TEMPLATES + 'directive.js')
-		.pipe(gulp.dest(TARGET));
+function checkNameAnd(action) {
+	if (!argv.n) {
+		console.log('\nname parameter not specified. Aborting...\n');
+		return;
+	}
+	if (!/^[a-z-]+$/.test(argv.n)) {
+		console.log('\nname must be dash-delimited-lowercase. Aborting...\n');
+		return;
+	}
+	action();
 }
 
-function copyDependencies() {
-	gulp.src(TEMPLATES + 'dependencies.json')
-		.pipe(gulp.dest(TARGET));
+function toLowerCamelCase(dashDelimitedName) {
+	var words = dashDelimitedName.split('-');
+	var wordsAfterFirst = words.slice(1);
+	return words[0] + wordsAfterFirst.map(capitalizeFirstLetter).join('');
+
+	function capitalizeFirstLetter(word) {
+		return word.charAt(0).toUpperCase() + word.slice(1);
+	}
 }
 
-function copyCSS() {
-	gulp.src(TEMPLATES + 'style.css')
-		.pipe(gulp.dest(TARGET));
+function buildTemplate(src, target) {
+	gulp.src(TEMPLATES + src)
+		.pipe(replace(/__namePattern__/g, toLowerCamelCase(argv.n)))
+		.pipe(replace(/__name-pattern__/g, argv.n))
+		.pipe(gulp.dest(TARGET + (target || '')));
 }
 
-function copyController() {
-	gulp.src(TEMPLATES + 'controller.js')
-		.pipe(gulp.dest(TARGET));
+function buildDirective() {
+	buildTemplate('directive.js');
+	buildTemplate('template.html');
+	buildTemplate('style.css');
+	buildTemplate('test*', 'test');
 }
 
-function copyModule() {
-	gulp.src(TEMPLATES + 'module.js')
-		.pipe(gulp.dest(TARGET));
+function buildFilter() {
+	buildTemplate('filter.js');
 }
 
-function copyFilter() {
-	gulp.src(TEMPLATES + 'filter.js')
-		.pipe(gulp.dest(TARGET));
-}
-
-function copyService() {
-	gulp.src(TEMPLATES + 'service.js')
-		.pipe(gulp.dest(TARGET));
-}
-
-function copyTemplate() {
-	gulp.src(TEMPLATES + 'template.html')
-		.pipe(gulp.dest(TARGET));
-}
-
-function copyTest() {
-	gulp.src([TEMPLATES + 'test*', TEMPLATES + 'dependencies.json'])
-		.pipe(gulp.dest(TARGET + '_test'));
+function buildService() {
+	buildTemplate('service.js');
 }
 
 function copyAppStructure() {

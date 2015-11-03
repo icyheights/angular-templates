@@ -2,28 +2,35 @@
  * @desc 
  * Directive description
  *
- * @arg {paramtype} paramname - input parameter description
+ * @arg {type} bind -  isolate scope binding description
  */
 (function() {
 	'use strict';
 
-	angular.module('module.name')
-		.directive('moduleName', moduleName);
+	angular.module('__namePattern__', [
+	]).directive('__namePattern__', __namePattern__);
 
-	function moduleName() {
+	__namePattern__.$inject = [];
+
+	function __namePattern__() {
 		return {
 			restrict: 'E',
-			templateUrl: 'templates/module-name.html',
-			controller: 'ModuleNameController',
+			templateUrl: 'templates/__namePattern__.html',
+			link: link,
+			controller: controller,
 			controllerAs: 'vm',
 			bindToController: true,
-			link: link,
 			scope: {
-				input: '='
+				bind: '='
 			}
 		};
 
 		function link(scope, element, attrs) {
+			var vm = scope.vm;
+		}
+
+		function controller() {
+			var vm = this;
 		}
 	}
 })();
