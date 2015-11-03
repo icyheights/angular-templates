@@ -70,28 +70,22 @@ function checkNameAnd(action) {
 		console.log('\nname parameter not specified. Aborting...\n');
 		return;
 	}
-	if (!/^[a-z-]+$/.test(argv.n)) {
-		console.log('\nname must be dash-delimited-lowercase. Aborting...\n');
+	if (!/^[a-zA-Z]+$/.test(argv.n)) {
+		console.log('\nname must be lowerCamelCase. Aborting...\n');
 		return;
 	}
 	action();
 }
 
-function toLowerCamelCase(dashDelimitedName) {
-	var words = dashDelimitedName.split('-');
-	var wordsAfterFirst = words.slice(1);
-	return words[0] + wordsAfterFirst.map(capitalizeFirstLetter).join('');
-
-	function capitalizeFirstLetter(word) {
-		return word.charAt(0).toUpperCase() + word.slice(1);
-	}
+function toDashDelimitedName(lowerCamelCaseName) {
+	return lowerCamelCaseName.replace(/([A-Z])/g, '-$1').toLowerCase();
 }
 
 function buildTemplate(src, target) {
 	gulp.src(TEMPLATES + src)
-		.pipe(replace(/__namePattern__/g, toLowerCamelCase(argv.n)))
-		.pipe(replace(/__name-pattern__/g, argv.n))
-		.pipe(gulp.dest(TARGET + (target || '')));
+		.pipe(replace(/__namePattern__/g, argv.n))
+		.pipe(replace(/__name-pattern__/g, toDashDelimitedName(argv.n)))
+		.pipe(gulp.dest(TARGET + argv.n + '/' + (target || '')));
 }
 
 function buildDirective() {
