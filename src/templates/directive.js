@@ -17,7 +17,7 @@
 			restrict: 'E',
 			templateUrl: 'templates/__namePattern__.html',
 			link: link,
-			controller: controller,
+			controller: Controller,
 			controllerAs: 'vm',
 			bindToController: true,
 			scope: {
@@ -29,7 +29,7 @@
 			var vm = scope.vm;
 		}
 
-		function controller() {
+		function Controller() {
 			var vm = this;
 		}
 	}

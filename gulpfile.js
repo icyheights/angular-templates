@@ -7,6 +7,7 @@ var replace = require('gulp-replace');
 var ignore = require('gulp-ignore');
 var del = require('del');
 var argv = require('yargs').argv;
+var rename = require('gulp-rename');
 
 //Global configuration constants
 
@@ -70,7 +71,7 @@ function checkNameAnd(action) {
 		console.log('\nname parameter not specified. Aborting...\n');
 		return;
 	}
-	if (!/^[a-zA-Z]+$/.test(argv.n)) {
+	if (!/^[a-z]+[A-Z][a-zA-Z]+$/.test(argv.n)) {
 		console.log('\nname must be lowerCamelCase. Aborting...\n');
 		return;
 	}
@@ -85,6 +86,14 @@ function buildTemplate(src, target) {
 	gulp.src(TEMPLATES + src)
 		.pipe(replace(/__namePattern__/g, argv.n))
 		.pipe(replace(/__name-pattern__/g, toDashDelimitedName(argv.n)))
+		.pipe(rename(function(path) {
+			switch (path.basename) {
+				case 'directive':
+				case 'service':
+				case 'filter':
+					path.basename = 'script'
+			}
+		}))
 		.pipe(gulp.dest(TARGET + argv.n + '/' + (target || '')));
 }
 
@@ -112,7 +121,7 @@ function copyAppStructure() {
 function copyLibJSON() {
 	gulp.src(APPLICATION_STRUCTURE + 'lib.json')
 		.pipe(gulp.dest(TARGET + 'src/test'))
-		.pipe(gulp.dest(TARGET + 'src/apps/example-root'));
+		.pipe(gulp.dest(TARGET + 'src/apps/exampleRoot'));
 }
 
 function copyGitignore() {

@@ -3,6 +3,7 @@
 //Required node modules
 
 var gulp = require('gulp');
+var fs = require('fs');
 var del = require('del');
 var argv = require('yargs').argv;
 var jshint = require('gulp-jshint');
@@ -29,11 +30,11 @@ tasks.forEach(function(task) {
 });
 
 gulp.task('default', function() {
-	process.stdout.write('\nAvailable tasks:\n');
+	console.log('\nAvailable tasks:');
 	tasks.forEach(function(task) {
-		process.stdout.write('\t' + task.name + '\n');
+		console.log('\t' + task.name);
 	});
-	process.stdout.write('\n');
+	console.log('');
 });
 
 //Task functions
@@ -43,14 +44,14 @@ function clean() {
 }
 
 function test() {
-	var moduleName = argv.n.replace(/-/g, '.');
+	var moduleName = argv.n;
 	if (!moduleName) {
-		process.stdout.write('\nIncorrect invocation.\n');
-		process.stdout.write('Usage: gulp test -n module.name\n\n');
+		console.log('\nIncorrect invocation.');
+		console.log('Usage: gulp test -n moduleName\n');
 		return;
 	}
 
-	var testDependencies = require(getModulePath(moduleName) + '_test/dependencies.json');
+	var testDependencies = getDirectDependencies(getModulePath(moduleName) + 'test/test.js');
 	var allModules = Array.prototype.concat.apply([], testDependencies.map(getModuleAndDependencies));
 
 	buildModules(allModules);
@@ -63,8 +64,8 @@ function test() {
 function app() {
 	var appName = argv.n;
 	if (!appName) {
-		process.stdout.write('\nIncorrect invocation.\n');
-		process.stdout.write('Usage: gulp app -n app-name\n\n');
+		console.log('\nIncorrect invocation.');
+		console.log('Usage: gulp app -n appName\n');
 		return;
 	}
 
@@ -86,12 +87,16 @@ function buildModules(moduleNames) {
 }
 
 function getModulePath(moduleName) {
-	return './src/components/' + moduleName.replace(/\./g, '/') + '/';
+	return './src/components/' + moduleName + '/';
+}
+
+function getDirectDependencies(file) {
+	var moduleDefinitionRegExp = /angular\.module\(.*(\[[\s\S]*?\])/;
+	return eval(fs.readFileSync(file, 'utf-8').match(moduleDefinitionRegExp)[1]);
 }
 
 function getModuleAndDependencies(moduleName) {
-	var directDependencies = require(getModulePath(moduleName) + 'dependencies.json');
-	return Array.prototype.concat.apply([moduleName], directDependencies.map(getModuleAndDependencies));
+	return Array.prototype.concat.apply([moduleName], getDirectDependencies(getModulePath(moduleName) + 'script.js').map(getModuleAndDependencies));
 }
 
 function glob(moduleName, pattern) {
@@ -168,7 +173,7 @@ function getBuildVersion() {
 }
 
 function copyTestDirective(moduleName) {
-	gulp.src(getModulePath(moduleName) + '_test/*')
+	gulp.src(getModulePath(moduleName) + 'test/*')
 		.pipe(gulp.dest(TARGET));
 }
 
