@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('__namePattern__', [
+	angular.module('__name-pattern__', [
 	]).directive('__namePattern__', __namePattern__);
 
 	__namePattern__.$inject = [];
@@ -15,7 +15,7 @@
 	function __namePattern__() {
 		return {
 			restrict: 'E',
-			templateUrl: 'templates/__namePattern__.html',
+			templateUrl: 'templates/__name-pattern__.html',
 			link: link,
 			controller: Controller,
 			controllerAs: 'vm',

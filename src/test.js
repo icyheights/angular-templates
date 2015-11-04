@@ -2,21 +2,21 @@
 	'use strict';
 
 	angular.module('test', [
-		'__namePattern__'
+		'__name-pattern__'
 	]).directive('test', test);
 
 	function test() {
 		return {
 			restrict: 'E',
 			templateUrl: 'test.html',
-			controller: controller,
+			controller: Controller,
 			controllerAs: 'vm',
 			bindToController: true,
 			scope: {}
 		};
 	}
 
-	function controller() {
+	function Controller() {
 		var vm = this;
 	}
 })();

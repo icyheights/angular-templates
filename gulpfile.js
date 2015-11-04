@@ -4,15 +4,13 @@
 
 var gulp = require('gulp');
 var replace = require('gulp-replace');
-var ignore = require('gulp-ignore');
 var del = require('del');
 var argv = require('yargs').argv;
 var rename = require('gulp-rename');
 
 //Global configuration constants
 
-var TEMPLATES = './src/templates/';
-var APPLICATION_STRUCTURE = './src/application-structure/'
+var SRC = './src/';
 var TARGET = './target/';
 
 //Tasks
@@ -21,8 +19,7 @@ var tasks = [
 	{name: 'clean', deps: [], runner: clean},
 	{name: 'directive', deps: ['clean'], runner: directive},
 	{name: 'service', deps: ['clean'], runner: service},
-	{name: 'filter', deps: ['clean'], runner: filter},
-	{name: 'app', deps: ['clean'], runner: app}
+	{name: 'filter', deps: ['clean'], runner: filter}
 ];
 
 tasks.forEach(makeTask);
@@ -58,12 +55,6 @@ function filter() {
 	checkNameAnd(buildFilter);
 }
 
-function app() {
-	copyAppStructure();
-	copyLibJSON();
-	copyGitignore();
-}
-
 //Auxiliary functions
 
 function checkNameAnd(action) {
@@ -71,21 +62,27 @@ function checkNameAnd(action) {
 		console.log('\nname parameter not specified. Aborting...\n');
 		return;
 	}
-	if (!/^[a-z]+[A-Z][a-zA-Z]+$/.test(argv.n)) {
-		console.log('\nname must be lowerCamelCase. Aborting...\n');
+	if (!/^[a-z]+(?:-[a-z]+)+$/.test(argv.n)) {
+		console.log('\nname must be dash-delimited-name. Aborting...\n');
 		return;
 	}
 	action();
 }
 
-function toDashDelimitedName(lowerCamelCaseName) {
-	return lowerCamelCaseName.replace(/([A-Z])/g, '-$1').toLowerCase();
+function toLowerCamelCase(dashDelimitedName) {
+	return dashDelimitedName.split('-').map(function(word, index) {
+    if (index > 0) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    } else {
+      return word;
+    }
+  }).join('');
 }
 
-function buildTemplate(src, target) {
-	gulp.src(TEMPLATES + src)
-		.pipe(replace(/__namePattern__/g, argv.n))
-		.pipe(replace(/__name-pattern__/g, toDashDelimitedName(argv.n)))
+function buildTemplate(glob, target) {
+	gulp.src(SRC + glob)
+		.pipe(replace(/__namePattern__/g, toLowerCamelCase(argv.n)))
+		.pipe(replace(/__name-pattern__/g, argv.n))
 		.pipe(rename(function(path) {
 			switch (path.basename) {
 				case 'directive':
@@ -110,21 +107,4 @@ function buildFilter() {
 
 function buildService() {
 	buildTemplate('service.js');
-}
-
-function copyAppStructure() {
-	gulp.src(APPLICATION_STRUCTURE + '**/*')
-		.pipe(ignore.exclude('lib.json'))
-		.pipe(gulp.dest(TARGET));
-}
-
-function copyLibJSON() {
-	gulp.src(APPLICATION_STRUCTURE + 'lib.json')
-		.pipe(gulp.dest(TARGET + 'src/test'))
-		.pipe(gulp.dest(TARGET + 'src/apps/exampleRoot'));
-}
-
-function copyGitignore() {
-	gulp.src(APPLICATION_STRUCTURE + '.gitignore')
-		.pipe(gulp.dest(TARGET));
 }

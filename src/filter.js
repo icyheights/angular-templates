@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	angular.module('__namePattern__', [
+	angular.module('__name-pattern__', [
 	]).filter('__namePattern__', __namePattern__);
 
 	__namePattern__.$inject = [];
