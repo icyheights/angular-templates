@@ -14,7 +14,7 @@
 
 	function __namePattern__() {
 		return {
-			restrict: 'E',
+			restrict: 'A',
 			templateUrl: 'templates/__name-pattern__.html',
 			link: link,
 			controller: Controller,
