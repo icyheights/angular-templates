@@ -5,6 +5,8 @@
 		'__name-pattern__'
 	]).directive('test', test);
 
+	test.$inject = [];
+
 	function test() {
 		return {
 			restrict: 'E',
@@ -14,9 +16,9 @@
 			bindToController: true,
 			scope: {}
 		};
-	}
 
-	function Controller() {
-		var vm = this;
+		function Controller() {
+			var vm = this;
+		}
 	}
 })();
